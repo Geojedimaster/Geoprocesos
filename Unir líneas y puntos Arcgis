@@ -1,0 +1,24 @@
+import arcpy
+
+# Lista de puntos
+points = [(0, 0), (2, 2), (3, 1), (5, 3), (7, 2)]
+
+# Crear objeto PointGeometry para cada punto
+point_geoms = [arcpy.PointGeometry(arcpy.Point(*point)) for point in points]
+
+# Crear objeto MultiPoint
+multipoint = arcpy.Multipoint(point_geoms)
+
+# Crear objeto Polyline
+line = arcpy.Polyline(arcpy.Array([arcpy.Point(1, 1), arcpy.Point(2, 3), arcpy.Point(5, 2), arcpy.Point(7, 4)]))
+
+# Encontrar la línea más cercana para cada punto
+lines = [line.projectAsLine(point_geom) for point_geom in point_geoms]
+
+# Crear objeto MultiPoint y MultiLineString
+multipoint_out = arcpy.CopyFeatures_management(multipoint, arcpy.Geometry())
+multiline_out = arcpy.CopyFeatures_management(arcpy.Array(lines), arcpy.Geometry())
+
+# Imprimir objetos MultiPoint y MultiLineString
+print("MultiPoint: ", multipoint_out)
+print("MultiLineString: ", multiline_out)
