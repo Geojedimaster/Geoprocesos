@@ -1,0 +1,23 @@
+from shapely.geometry import Point, LineString, MultiPoint, MultiLineString
+
+# Lista de puntos
+points = [(0, 0), (2, 2), (3, 1), (5, 3), (7, 2)]
+
+# Crear objetos Point
+point_objs = [Point(x, y) for x, y in points]
+
+# Crear objeto MultiPoint
+multipoint = MultiPoint(point_objs)
+
+# Crear objeto LineString
+line = LineString([(1, 1), (2, 3), (5, 2), (7, 4)])
+
+# Encontrar la línea más cercana para cada punto
+lines = [line.interpolate(line.project(point)) for point in multipoint]
+
+# Crear objeto MultiLineString
+multiline = MultiLineString(lines)
+
+# Imprimir objetos MultiPoint y MultiLineString
+print("MultiPoint: ", multipoint)
+print("MultiLineString: ", multiline)
